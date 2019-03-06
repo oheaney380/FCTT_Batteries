@@ -13,7 +13,6 @@ temperature = data.Temperature;
 
 Q = 2.5; %Capacity in Ah
 
-OCV_50SoC = 3.6872377;
 Curr_disch = [2.496 5 10 15 20 25];
 Volt_disch = [3.60 3.53 3.45 3.36 3.29 3.19];
 R0 = abs(mean(diff(Volt_disch)./diff(Curr_disch)));
@@ -38,25 +37,36 @@ dt = 1;
 %initial state
 
 SoC = zeros(length(I),1);
-V  = zeros(length(I),1);
+V = zeros(length(I),1);
+error = zeros(length(I),1);
 
 SoC(1) = SoC_init;
 V(1) = interp1(SoC_prof, OCV_prof, SoC(1))+I(1)*R0;
+error(1) = V(1) - VoltageV(1);
 
 for i = 2:length(I)
     
     SoC(i) = SoC(i-1) + I(i-1)*(dt/3600)/Q;
     V(i) = interp1(SoC_prof, OCV_prof, SoC(i)) + I(i)*R0;
-    
+    error(i) = V(i) - VoltageV(i);
 end
 
 figure
-subplot(211)
+subplot(311)
 plot(V)
 hold on
 plot(VoltageV)
+xlabel('Time (s)')
+ylabel('Voltage (V)')
 
-subplot(212)
+subplot(312)
 plot(SoC)
+xlabel('Time (s)')
+ylabel('SoC')
+
+subplot(313)
+plot(error)
+xlabel('Time (s)')
+ylabel('Error')
 
 toc
