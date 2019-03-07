@@ -61,5 +61,5 @@ SoC_table = fliplr(SoC);
 R1 = flipud(R1);
 R1 = R1(:,curr_order);
 
-save('R1_table.mat', 'R1', 'SoC_table', 'curr_table')
+
 
