@@ -1,5 +1,5 @@
 clear
-%close all
+close all
 
 [Times,CurrentA,VoltageV1] = import_training_data([pwd '\FCTT 18-19 Data\Model_Training_Data_20.csv']);
 
@@ -63,3 +63,30 @@ R1 = R1(:,curr_order);
 
 save('R1_table.mat', 'R1', 'SoC_table', 'curr_table')
 
+%Part2a f
+plot(curr_table, R1(4,:))
+
+%Part2a g
+
+%Best to use for now [0.016 1.25 15]
+
+R1_0A_init = 0.013;
+b_init = 1;
+c_init = 1;
+
+Params2a_g = lsqcurvefit(@Gauss_R1, [R1_0A_init b_init c_init], curr_table, R1(4, :));
+
+R1_0A = Params2a_g(1);
+b = Params2a_g(2);
+c = Params2a_g(3);
+
+figure
+R1_2a_g = R1_0A*exp(-(curr_table-b).^2/c);
+plot(curr_table, R1_2a_g)
+
+R12fit = R1(4,:);
+
+Gauss_2a_g = fit(curr_table.', R12fit.', 'gauss1');
+
+figure
+plot(Gauss_2a_g, curr_table, R12fit)
