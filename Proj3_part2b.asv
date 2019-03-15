@@ -6,7 +6,7 @@ close all
 load('C1_mean.mat');
 
 n_SoC = 7;
-n_pulses = 9;
+n_pulses = 8;
 pulse_idx = 1;
 
 load('OCV_data.mat');
@@ -57,7 +57,7 @@ R0_mean = mean(mean(R0));
 %C1_mean = mean(mean(C1));
 
 
-[curr_table, curr_order] = sort(-dI(1, 1:8));
+[curr_table, curr_order] = sort(-dI(1, 1:7));
 SoC_table = fliplr(SoC);
 R1 = flipud(R1);
 R1 = R1(:,curr_order);

@@ -52,21 +52,24 @@ for i = 2:length(I)
 end
 
 figure
-subplot(311)
+ax1 = subplot(311);
 plot(V)
 hold on
 plot(VoltageV)
 xlabel('Time (s)')
 ylabel('Voltage (V)')
+legend('Model prediction', 'Real data')
 
-subplot(312)
+ax2 = subplot(312);
 plot(SoC)
 xlabel('Time (s)')
 ylabel('SoC')
 
-subplot(313)
+ax3 = subplot(313);
 plot(error)
 xlabel('Time (s)')
 ylabel('Error')
+
+linkaxes([ax1,ax2,ax3],'x')
 
 toc

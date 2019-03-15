@@ -5,11 +5,11 @@ close all
 
 
 n_SoC = 8;
-n_pulses = 8;
+n_pulses = 9;
 pulse_idx = 1;
 
 load('OCV_data.mat');
-pulse_onoff = find(abs(diff(CurrentA)) > 0.6); %Find indices of current peaks
+pulse_onoff = find(abs(diff(CurrentA)) > 0.4); %Find indices of current peaks
 
 pulse_on = pulse_onoff(1:2:end);
 pulse_off = pulse_onoff(2:2:end);
@@ -56,7 +56,7 @@ R0_mean = mean(mean(R0));
 C1_mean = mean(mean(C1));
 
 
-[curr_table, curr_order] = sort(-dI(1, 1:7));
+[curr_table, curr_order] = sort(-dI(1, 1:8));
 SoC_table = fliplr(SoC);
 R1 = flipud(R1);
 R1 = R1(:,curr_order);
