@@ -1,9 +1,9 @@
-function [SoC, V, T] = ECN_model_3(I, time, T_init, T_env, SoC_init)
+function [SoC, V, T] = ECN_model_4(I, time, T_init, T_env, Q, SoC_init)
 
 load('OCV_data_rounded.mat');
 load('C1_mean.mat');
 
-SoC = zeros(length(I),1);
+SoC = zeros(lengtha(I),1);
 i_r1 = zeros(length(I),1);
 V = zeros(length(I),1);
 T = zeros(length(I),1);
