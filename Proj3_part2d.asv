@@ -1,8 +1,0 @@
-clear
-close all
-
-data = import_data([pwd '\FCTT 18-19 Data\Battery_Testing_Data.csv']);
-
-SoC_init = 0.85;
-
-V_model = 

@@ -17,18 +17,18 @@ ax1 = subplot(311);
 plot(data.Times, data.VoltageV, 'b')
 hold on
 plot(data.Times, V_model, 'r')
-ylabel('Voltage, V')
-xlabel('Time, s')
+ylabel('Voltage (V)')
+xlabel('Time (s)')
 legend('Test data', 'Model prediciton')
 
 ax2 = subplot(312);
 plot(data.Times, SoC_model*100)
-ylabel('SoC, %')
-xlabel('Time, s')
+ylabel('SoC (%)')
+xlabel('Time (s)')
 
 ax3 = subplot(313);
 plot(data.Times, Error)
-ylabel('Error, V')
-xlabel('Time, s')
+ylabel('Error (V)')
+xlabel('Time (s)')
 linkaxes([ax1,ax2,ax3],'x')
 toc
