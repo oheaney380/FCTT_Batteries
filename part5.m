@@ -15,7 +15,8 @@ scale_factor = 60*60/length(time_profile);
 time_profile = scale_factor*time_profile;
 Ah_thrput_profile = scale_factor*Ah_thrput_profile;
 
-for T = 10:10:40
+max_cycles = 7300;
+for T = 10:10:50
     
     Capacity(T/10,1) = Q;
     T_init(T/10,1) = T;
@@ -24,13 +25,14 @@ for T = 10:10:40
     SoC_init(T/10,1) = 0.85;
     time_cal(T/10,1) = 0;
     
-    for i = 2:7300
+    for i = 2:max_cycles
         [SoC_prof, V_prof, Temp_prof] = ECN_model_4(I, time_profile,...
             T_init(T/10,i-1), T, Capacity(T/10,i-1), SoC_init(T/10,i-1),Resistance(T/10,i-1));
         Ah_thrput(T/10,i) = Ah_thrput(T/10,i-1) + Ah_thrput_profile;
         SoC_min(T/10,i) = min(SoC_prof);
         V_min(T/10,i) = min(V_prof);
         T_run(T/10,i) = Temp_prof(end);
+        T_max(T/10,i) = max(Temp_prof);
         if max(Temp_prof) > 60
             warning('Maximum Temperature Exceeded')
             break
@@ -61,30 +63,55 @@ for T = 10:10:40
         Resistance(T/10,i) = Res_inc_prof(T/10,i) + Res_inc_cal(T/10,i);
     end
     
-    
-    
 end
 
+time_years = [1:max_cycles;1:max_cycles;1:max_cycles;1:max_cycles]*0.5/365;
 fig1 = figure(1);
 h1 = subplot(211);
 hold on
-plot(Ah_thrput',Q-Capacity')
-legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','location','northwest')
-xlabel('Current Throughput [Ah]')
+plot(time_years',Q-Capacity')
+legend('10 C', '20 C', '30 C', '40 C','location','northwest')
+xlabel('Time [Years]')
 ylabel('Capacity Loss [Ah]')
 grid on
 
 h2 = subplot(212);
 hold on
-plot(Ah_thrput',Resistance')
-legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','location','northwest')
-xlabel('Current Throughput [Ah]')
+plot(time_years',Resistance')
+legend('10 C', '20 C', '30 C', '40 C','location','northwest')
+xlabel('Time [Years]')
 ylabel('Resistance Increase [%]')
 grid on
 
 linkaxes([h1 h2],'x')
 
 
+fig2 = figure(2);
+h3 = subplot(311);
+hold on
+plot(time_years(:,2:end)',T_max(:,2:end)')
+legend('10 C', '20 C', '30 C', '40 C','location','northwest')
+xlabel('Time [Years]')
+ylabel('Max Temperature [C]')
+grid on
+
+h4 = subplot(312);
+hold on
+plot(time_years(:,2:end)',SoC_min(:,2:end)')
+legend('10 C', '20 C', '30 C', '40 C','location','southwest')
+xlabel('Time [Years]')
+ylabel('Minimum SoC')
+grid on
+
+h5 = subplot(313);
+hold on
+plot(time_years(:,2:end)',V_min(:,2:end)')
+legend('10 C', '20 C', '30 C', '40 C','location','southwest')
+xlabel('Time [Years]')
+ylabel('Minimum Voltage [V]')
+grid on
+
+linkaxes([h3 h4 h5],'x')
 %% Functions
 
 function [SlossV] = Sloss(params, Ah,T)
