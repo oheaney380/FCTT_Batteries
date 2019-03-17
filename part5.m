@@ -160,7 +160,7 @@ end
 function [RincV] = Rinc(ar, Ah,T)
 T = 273+T;
 R = 8.314;
-Eac = 22406;
+Eac = 51800;
 
 RincV = ar*exp(-Eac/(R*T))*Ah;
 end

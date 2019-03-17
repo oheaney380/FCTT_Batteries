@@ -24,7 +24,10 @@ params_S = lsqcurvefit(@fit_Sloss, [1 1], Ah_thrput, Sloss);
 
 plot(Ah_thrput,fit_Sloss(params_S,Ah_thrput))
 hold on
-plot(Ah_thrput,Sloss)
+scatter(Ah_thrput,Sloss)
+xlabel('Current Throughput [Ah]')
+ylabel('Capacity Loss [Ah]')
+legend('Fit','Data','location','northwest')
 
 %% Rinc cycling
 
@@ -34,7 +37,10 @@ ar = lsqcurvefit(@fit_Rinc, 1, Ah_r , Resistance);
 figure
 plot(Ah_r,fit_Rinc(ar,Ah_r))
 hold on
-plot(Ah_r,Resistance)
+scatter(Ah_r,Resistance)
+xlabel('Current Throughput [Ah]')
+ylabel('Resistance Increase [%]')
+legend('Fit','Data','location','northwest')
 
 %% Sloss calendar
 
@@ -43,7 +49,10 @@ params_S_cal = lsqcurvefit(@fit_Sloss_cal, [1 1], TimehS, Capacity_cal*Q/100);
 figure
 plot(TimehS,fit_Sloss_cal(params_S_cal,TimehS))
 hold on
-plot(TimehS, Capacity_cal*Q/100)
+scatter(TimehS, Capacity_cal*Q/100)
+xlabel('Time [Hours]')
+ylabel('Capacity Loss [Ah]')
+legend('Fit','Data','location','northwest')
 
 %% Rinc calendar
 
@@ -52,5 +61,7 @@ br = lsqcurvefit(@fit_Rinc_cal, 89.3744, TimehR, Resistance_cal);%,optimoptions(
 figure
 plot(TimehR,fit_Rinc_cal(br, TimehR))
 hold on
-plot(TimehR, Resistance_cal)
-
+scatter(TimehR, Resistance_cal)
+xlabel('Time [Hours]')
+ylabel('Resistance Increase [%]')
+legend('Fit','Data','location','northwest')

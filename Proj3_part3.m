@@ -23,15 +23,15 @@ xlabel('Time (s)')
 legend('Test data', 'Model prediciton')
 
 ax2 = subplot(312);
-plot(data.Times, T_model)
+plot(data.Times, data.Temperature,'b')
 hold on
-plot(data.Times, data.Temperature)
+plot(data.Times, T_model,'r')
 ylabel('Temperature (C)')
 xlabel('Time (s)')
 legend('Test data','Model prediction')
 
 ax3 = subplot(313);
-plot(data.Times, Error_T)
+plot(data.Times, Error_T,'b')
 ylabel('Error (C)')
 xlabel('Time (s)')
 linkaxes([ax1,ax2,ax3],'x')
@@ -39,6 +39,8 @@ linkaxes([ax1,ax2,ax3],'x')
 %%Last question part 3
 
 load('R1_3temps_3SoCs.mat');
+
+R1 = find_R1(
 
 figure
 plot([0 20 40], [R1_0C_30pc R1_20C_30pc R1_40C_30pc])
