@@ -68,7 +68,7 @@ ylabel('SoC')
 ax3 = subplot(313);
 plot(error)
 xlabel('Time (s)')
-ylabel('Error')
+ylabel('Error (V)')
 
 linkaxes([ax1,ax2,ax3],'x')
 

@@ -18,21 +18,22 @@ ax1 = subplot(311);
 plot(data.Times, data.VoltageV, 'b')
 hold on
 plot(data.Times, V_model, 'r')
-ylabel('Voltage, V')
-xlabel('Time, s')
+ylabel('Voltage (V)')
+xlabel('Time (s)')
 legend('Test data', 'Model prediciton')
 
 ax2 = subplot(312);
 plot(data.Times, T_model)
 hold on
 plot(data.Times, data.Temperature)
-ylabel('Temperature, C')
-xlabel('Time, s')
+ylabel('Temperature (C)')
+xlabel('Time (s)')
+legend('Test data','Model prediction')
 
 ax3 = subplot(313);
 plot(data.Times, Error_T)
-ylabel('Temperature error, C')
-xlabel('Time, s')
+ylabel('Error (C)')
+xlabel('Time (s)')
 linkaxes([ax1,ax2,ax3],'x')
 
 %%Last question part 3
@@ -44,8 +45,8 @@ plot([0 20 40], [R1_0C_30pc R1_20C_30pc R1_40C_30pc])
 hold on
 plot([0 20 40], [R1_0C_60pc R1_20C_60pc R1_40C_60pc])
 plot([0 20 40], [R1_0C_90pc R1_20C_90pc R1_40C_90pc])
-xlabel('Temperature, C')
-ylabel('Resistance, Ohm')
+xlabel('Temperature (C)')
+ylabel('Resistance (\Omega)')
 legend('30% SoC', '60% SoC', '90% SoC')
 
 toc
