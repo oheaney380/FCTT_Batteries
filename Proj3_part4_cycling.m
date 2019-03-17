@@ -116,7 +116,7 @@ z = params(2);
 
 T = 273+T;
 R = 8.314;
-Eac = 22406;
+Eac = 58000;
 
 Sloss_calV = bc*exp(-Eac/(R*T))*Time.^z;
 end
@@ -124,7 +124,7 @@ end
 function [Rinc_calV] = Rinc_cal(br, Time, T)
 T = 273+T;
 R = 8.314;
-Eac = 22406;
+Eac = 49800;
 
 Rinc_calV = br*exp(-Eac/(R*T))*Time;
 end

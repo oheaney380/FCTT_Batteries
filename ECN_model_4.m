@@ -27,7 +27,7 @@ for i = 2:length(I)
     
     T(i) = T(i-1) + dt*(P(i-1)-h*A*(T(i-1)-T_env))/(m*C);
     
-    R1 = find_R1(I(i), T(i));
+    R1 = find_R1(I(i), T(i))*(1+ r_inc);
     R0 = find_R0(T(i)) *(1+ r_inc);
     
     P(i) = I(i)^2*(R0+R1);

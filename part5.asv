@@ -42,12 +42,12 @@ for T = 10:10:40
             break
         end
         Cap_loss_prof(T/10,i) = Sloss(params_S,Ah_thrput(T/10,i),mean(T_run(T/10,:)));
-        Res_inc_prof(T/10,i) = Rinc(ar, Ah_thrput(T/10,i),T_run(T/10,i));
+        Resistance(T/10,i) = Rinc(ar, Ah_thrput(T/10,i),T_run(T/10,i));
         SoC = SoC_prof(end);
         time_charge = linspace(0,7200*(0.85-SoC),5000);
-        I_charge = 0.5*Capacity(T/10,i-1)*ones(length(time_charge),1);
+        I_charge = 0.5*Capacity(T/10,i)*ones(length(time_charge),1);
         [SoC_charge, V_charge, Temp_charge] = ECN_model_4(I_charge, time_charge,...
-            T_run(T/10,i-1), T, Capacity(T/10,i-1), SoC, Resistance(T/10,i-1));
+            T_run(T/10,i-1), T, Capacity(T/10,i), SoC, Resistance(T/10,i));
         T_init(T/10,i) = T;
         SoC_init(T/10,i) = SoC_charge(end);
         if max(Temp_charge) > 60
@@ -55,10 +55,8 @@ for T = 10:10:40
             break
         end
         time_cal(T/10,i) = time_cal(T/10,i-1) + 11; %Hours
-        Cap_loss_cal(T/10,i) = Sloss_cal(params_S_cal,time_cal(T/10,i),T);
-        Res_inc_cal(T/10,i) = Rinc_cal(br,time_cal(T/10,i),T);
-        Capacity(T/10,i) = Q - (Cap_loss_prof(T/10,i) + Cap_loss_cal(T/10,i));
-        Resistance(T/10,i) = Res_inc_prof(T/10,i) + Res_inc_cal(T/10,i);
+        Cap_loss_cal(T/10,i) = Sloss_cal(params_S_cal,time_cal,T);
+        Res_inc_cal(T/10,i) = Rinc_cal(br,time_cal,T);
     end
     
     
@@ -112,7 +110,7 @@ z = params(2);
 
 T = 273+T;
 R = 8.314;
-Eac = 58000;
+Eac = 22406;
 
 Sloss_calV = bc*exp(-Eac/(R*T))*Time.^z;
 end
@@ -120,7 +118,7 @@ end
 function [Rinc_calV] = Rinc_cal(br, Time, T)
 T = 273+T;
 R = 8.314;
-Eac = 49800;
+Eac = 22406;
 
 Rinc_calV = br*exp(-Eac/(R*T))*Time;
 end
