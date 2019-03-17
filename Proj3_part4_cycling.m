@@ -54,7 +54,8 @@ fig1 = figure(1);
 h1 = subplot(211);
 hold on
 plot(Ah_thrput',Q-Capacity')
-legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','location','northwest')
+plot([0 max(max(Ah_thrput))], [0.75 0.75],'--k')
+legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','End-of-Life Limit','location','northwest')
 xlabel('Current Throughput [Ah]')
 ylabel('Capacity Loss [Ah]')
 grid on
@@ -62,7 +63,8 @@ grid on
 h2 = subplot(212);
 hold on
 plot(Ah_thrput',Resistance')
-legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','location','northwest')
+plot([0 max(max(Ah_thrput))], [100 100],'--k')
+legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','End-of-Life Limit','location','northwest')
 xlabel('Current Throughput [Ah]')
 ylabel('Resistance Increase [%]')
 grid on
@@ -74,7 +76,8 @@ fig2 = figure(2);
 h3 = subplot(211);
 hold on
 plot(time_cal_mat',Q-Capacity_cal')
-legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','location','northwest')
+plot([0 10], [0.75 0.75],'--k')
+legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','End-of-Life Limit','location','northwest')
 xlabel('Time [Years]')
 ylabel('Capacity Loss [Ah]')
 grid on
@@ -82,7 +85,8 @@ grid on
 h4 = subplot(212);
 hold on
 plot(time_cal_mat',Resistance_cal')
-legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','location','northwest')
+plot([0 10], [100 100],'--k')
+legend('10 C', '20 C', '30 C', '40 C', '50 C', '60 C','End-of-Life Limit','location','northwest')
 xlabel('Time [Years]')
 ylabel('Resistance Increase [%]')
 grid on
