@@ -8,14 +8,14 @@ Q = 2.5;
 
 Ah_thrput = zeros(length(Cycle), 1);
 
-Ah_thrput(1) = Q*Capacity(1)*Cycle(1);
+Ah_thrput(1) = Q*Capacity(1)*Cycle(1)/100;
 Sloss = Q*(100-Capacity)/100;
 
 %% Sloss cycle
 
 for i = 2:length(Cycle)
     
-    Ah_thrput(i) = Ah_thrput(i-1) + Q*Capacity(i)*(Cycle(i)-Cycle(i-1));
+    Ah_thrput(i) = Ah_thrput(i-1) + Q*Capacity(i)*(Cycle(i)-Cycle(i-1))/100;
 
 end
 
