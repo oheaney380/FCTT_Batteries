@@ -1,3 +1,4 @@
+tic
 clear
 close all
 
@@ -33,16 +34,33 @@ for T = 10:10:50
         V_min(T/10,i) = min(V_prof);
         T_run(T/10,i) = Temp_prof(end);
         T_max(T/10,i) = max(Temp_prof);
+        
         if max(Temp_prof) > 60
             warning('Maximum Temperature Exceeded')
+            Capacity(T/10,i:end) = NaN*ones(1,max_cycles-i+1);
+            Resistance(T/10,i:end) = NaN*ones(1,max_cycles-i+1);
+            T_max(T/10,i:end) = NaN*ones(1,max_cycles-i+1);
+            SoC_min(T/10,i:end) = NaN*ones(1,max_cycles-i+1);
+            V_min(T/10,i:end) = NaN*ones(1,max_cycles-i+1);
             break
         elseif min(V_prof) < 2.5
             warning('Minimum Voltage Exceeded')
+            Capacity(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            Resistance(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            T_max(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            SoC_min(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            V_min(T/10,i:end) = NaN*ones(max_cycles-1,1);
             break
         elseif min(SoC_prof) < 0.1
             warning('Minimum SoC Exceeded')
+            Capacity(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            Resistance(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            T_max(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            SoC_min(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            V_min(T/10,i:end) = NaN*ones(max_cycles-1,1);
             break
         end
+        
         Cap_loss_prof(T/10,i) = Sloss(params_S,Ah_thrput(T/10,i),mean(T_run(T/10,:)));
         Res_inc_prof(T/10,i) = Rinc(ar, Ah_thrput(T/10,i),T_run(T/10,i));
         SoC = SoC_prof(end);
@@ -54,6 +72,11 @@ for T = 10:10:50
         SoC_init(T/10,i) = SoC_charge(end);
         if max(Temp_charge) > 60
             disp('Maximum Temperature Exceeded during charge')
+            Capacity(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            Resistance(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            T_max(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            SoC_min(T/10,i:end) = NaN*ones(max_cycles-1,1);
+            V_min(T/10,i:end) = NaN*ones(max_cycles-1,1);
             break
         end
         time_cal(T/10,i) = time_cal(T/10,i-1) + 11; %Hours
@@ -65,20 +88,23 @@ for T = 10:10:50
     
 end
 
-time_years = [1:max_cycles;1:max_cycles;1:max_cycles;1:max_cycles]*0.5/365;
+time_years = [1:max_cycles;1:max_cycles;1:max_cycles;1:max_cycles;1:max_cycles]*0.5/365;
 fig1 = figure(1);
 h1 = subplot(211);
 hold on
 plot(time_years',Q-Capacity')
-legend('10 C', '20 C', '30 C', '40 C','location','northwest')
+plot([0 10], [0.75 0.75],'--k')
+legend('10 C', '20 C', '30 C', '40 C','50 C','End-of-Life Limit','location','northwest')
 xlabel('Time [Years]')
 ylabel('Capacity Loss [Ah]')
+ylim([0 0.8])
 grid on
 
 h2 = subplot(212);
 hold on
 plot(time_years',Resistance')
-legend('10 C', '20 C', '30 C', '40 C','location','northwest')
+plot([0 10], [100 100],'--k')
+legend('10 C', '20 C', '30 C', '40 C','50 C','End-of-Life Limit','location','northwest')
 xlabel('Time [Years]')
 ylabel('Resistance Increase [%]')
 grid on
@@ -90,25 +116,31 @@ fig2 = figure(2);
 h3 = subplot(311);
 hold on
 plot(time_years(:,2:end)',T_max(:,2:end)')
-legend('10 C', '20 C', '30 C', '40 C','location','northwest')
+plot([0 10], [60 60],'--k')
+legend('10 C', '20 C', '30 C', '40 C','50 C','Temperature Limit','location','northwest')
 xlabel('Time [Years]')
 ylabel('Max Temperature [C]')
+ylim([10 70])
 grid on
 
 h4 = subplot(312);
 hold on
 plot(time_years(:,2:end)',SoC_min(:,2:end)')
-legend('10 C', '20 C', '30 C', '40 C','location','southwest')
+plot([0 10], [0.1 0.1],'--k')
+legend('10 C', '20 C', '30 C', '40 C','50 C','Minimum SoC Limit','location','southwest')
 xlabel('Time [Years]')
 ylabel('Minimum SoC')
+ylim([0 0.5])
 grid on
 
 h5 = subplot(313);
 hold on
 plot(time_years(:,2:end)',V_min(:,2:end)')
-legend('10 C', '20 C', '30 C', '40 C','location','southwest')
+plot([0 10], [2.5 2.5],'--k')
+legend('10 C', '20 C', '30 C', '40 C', '50 C','Minimum Voltage Limit','location','southwest')
 xlabel('Time [Years]')
 ylabel('Minimum Voltage [V]')
+ylim([2 3.6])
 grid on
 
 linkaxes([h3 h4 h5],'x')
