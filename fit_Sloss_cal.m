@@ -6,7 +6,7 @@ z = params(2);
 
 T = 273+60;
 R = 8.314;
-Eac = 22406;
+Eac = 58000;
 
 Sloss = bc*exp(-Eac/(R*T))*Time.^z;
 
